@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { getVendors } from '../../lib/data'
 import { Badge, Button, Card, SearchBar, SectionHeader } from '../../components/ui'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Tiffin Services | Tribey',
   description: 'Home-style meals delivered daily'

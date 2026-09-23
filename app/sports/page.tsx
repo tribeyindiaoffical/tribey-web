@@ -3,6 +3,8 @@ import BookingCard from '../../components/BookingCard'
 import { getSports } from '../../lib/data'
 import { SectionHeader, SearchBar } from '../../components/ui'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Sports Booking | Tribey',
   description: 'Book a turf or join a game nearby'

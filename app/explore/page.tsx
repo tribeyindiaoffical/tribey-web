@@ -3,6 +3,8 @@ import { getHighlights } from '../../lib/data'
 import { categories } from '../../lib/constants'
 import { Card, Pill, SearchBar, SectionHeader } from '../../components/ui'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Explore | Tribey',
   description: 'Find sports, trips, rooms and tiffin near you'

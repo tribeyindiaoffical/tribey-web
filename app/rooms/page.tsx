@@ -4,6 +4,8 @@ import genZ from '../../data/genZQuestions.json'
 import RoomListing from '../../components/RoomListing'
 import { SectionHeader, SearchBar, Card } from '../../components/ui'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Rooms & Roommates | Tribey',
   description: 'Find a place, find your people'

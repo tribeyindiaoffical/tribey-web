@@ -3,6 +3,8 @@ import { getTreks } from '../../lib/data'
 import MapPlaceholder from '../../components/MapPlaceholder'
 import { AvatarStack, Badge, Button, Card, SearchBar, SectionHeader } from '../../components/ui'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Treks & Camping | Tribey',
   description: 'Weekend treks with your new tribe'

@@ -3,6 +3,8 @@ import { getHighlights } from '../lib/data'
 import { categories } from '../lib/constants'
 import { Card, SearchBar, SectionHeader, Button } from '../components/ui'
 
+export const dynamic = 'force-dynamic'
+
 const pillars = [
   { title: 'Belonging', desc: 'A new city can feel unfamiliar. Tribey gives you a community from day one.' },
   { title: 'Connectivity', desc: 'Forums and events that connect you to people who get where you are.' },

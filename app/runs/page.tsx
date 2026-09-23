@@ -3,6 +3,8 @@ import { getRuns } from '../../lib/data'
 import MapPlaceholder from '../../components/MapPlaceholder'
 import { AvatarStack, Badge, Button, Card, SearchBar, SectionHeader } from '../../components/ui'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Runs & Rides | Tribey',
   description: 'Group runs and rides around the city'
