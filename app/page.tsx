@@ -24,7 +24,7 @@ export default async function Home() {
           Tribey helps you settle into a new city for work, study, or a fresh start — with people to meet, places to explore, and everyday needs sorted.
         </p>
         <div className="mt-8 flex items-center justify-center gap-3">
-          <Link href="/rooms"><Button variant="primary">Get started</Button></Link>
+          <Link href="/community"><Button variant="primary">Get started</Button></Link>
           <Link href="/explore"><Button variant="outline" className="bg-white">Explore Tribey</Button></Link>
         </div>
       </section>
@@ -84,7 +84,7 @@ export default async function Home() {
       <section className="py-14 text-center">
         <h2 className="text-2xl font-semibold text-brand-navy">Ready to feel at home?</h2>
         <p className="mt-2 text-slate-600">Join Tribey and start exploring your new city today.</p>
-        <Link href="/rooms" className="inline-block mt-6"><Button variant="primary">Join Tribey</Button></Link>
+        <Link href="/community" className="inline-block mt-6"><Button variant="primary">Join Tribey</Button></Link>
       </section>
     </>
   )

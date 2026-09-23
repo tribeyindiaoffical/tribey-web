@@ -2,11 +2,14 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { supabase } from '../../../../lib/supabaseClient'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { supabase } from '../../../lib/supabaseClient'
+import { Button } from '../../../components/ui'
 
-export default function VendorLoginPage() {
+export default function CommunityLoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const next = searchParams.get('next') || '/community'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -18,19 +21,20 @@ export default function VendorLoginPage() {
     setSubmitting(true)
 
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+    setSubmitting(false)
     if (signInError) {
       setError(signInError.message)
-      setSubmitting(false)
       return
     }
 
-    router.push('/tiffin/vendor/dashboard')
+    router.replace(next)
   }
 
   return (
     <section className="py-8 max-w-md">
-      <h2 className="text-2xl font-semibold mb-2">Vendor log in</h2>
-      <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+      <h2 className="text-2xl font-semibold mb-2">Log in</h2>
+      <p className="text-slate-600 mb-6">Log in to create, join, and chat in communities.</p>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
           <input
@@ -52,15 +56,15 @@ export default function VendorLoginPage() {
           />
         </div>
         {error && <p className="text-sm text-red-600">{error}</p>}
-        <button
-          disabled={submitting}
-          className="w-full px-5 py-3 rounded-lg bg-brand-orange text-white font-medium hover:opacity-90 disabled:opacity-50"
-        >
+        <Button variant="primary" disabled={submitting} className="w-full">
           {submitting ? 'Logging in…' : 'Log in'}
-        </button>
+        </Button>
       </form>
       <p className="text-sm text-slate-500 mt-4">
-        Not a vendor yet? <Link href="/tiffin/vendor/signup" className="text-brand-navy underline">Sign up</Link>
+        Don&apos;t have an account?{' '}
+        <Link href={`/community/signup?next=${encodeURIComponent(next)}`} className="text-brand-navy underline">
+          Sign up
+        </Link>
       </p>
     </section>
   )

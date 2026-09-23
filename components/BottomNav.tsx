@@ -6,8 +6,7 @@ import { usePathname } from 'next/navigation'
 const tabs = [
   { href: '/', label: 'Home', icon: 'M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z' },
   { href: '/explore', label: 'Explore', icon: 'M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Zm3.5 5.5-1.8 5.2-5.2 1.8 1.8-5.2z' },
-  { href: '/rooms', label: 'Rooms', icon: 'M3 10.5 12 4l9 6.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' },
-  { href: '/tiffin', label: 'Tiffin', icon: 'M4 3v9a4 4 0 0 0 4 4v5m0-9V3m4 0v9M4 8h4M17 3c-1.5 2-1.5 6 0 8s1.5 6 0 8' }
+  { href: '/community', label: 'Community', icon: 'M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 0a3.5 3.5 0 0 0 0-7m2 12v-1a4 4 0 0 0-2.5-3.7' }
 ]
 
 export default function BottomNav() {

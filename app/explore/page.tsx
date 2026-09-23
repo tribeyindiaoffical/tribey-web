@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Explore | Tribey',
-  description: 'Find sports, trips, rooms and tiffin near you'
+  description: 'Find sports, runs, and communities near you'
 }
 
 export default async function ExplorePage() {

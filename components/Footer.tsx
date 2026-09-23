@@ -4,9 +4,7 @@ const links = [
   { href: '/explore', label: 'Explore' },
   { href: '/sports', label: 'Sports' },
   { href: '/runs', label: 'Runs & Rides' },
-  { href: '/treks', label: 'Treks' },
-  { href: '/rooms', label: 'Rooms' },
-  { href: '/tiffin', label: 'Tiffin' }
+  { href: '/community', label: 'Community' }
 ]
 
 export default function Footer() {

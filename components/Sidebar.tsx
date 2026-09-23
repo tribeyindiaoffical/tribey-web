@@ -7,6 +7,7 @@ import { categories } from '../lib/constants'
 const items = [
   { href: '/', label: 'Home' },
   { href: '/explore', label: 'Explore' },
+  { href: '/community', label: 'Community' },
   ...categories.map((c) => ({ href: c.href, label: c.label }))
 ]
 

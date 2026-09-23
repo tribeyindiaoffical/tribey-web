@@ -7,7 +7,7 @@ import BottomNav from '../components/BottomNav'
 
 export const metadata = {
   title: 'Tribey',
-  description: 'Connect for sports, trips, and rooms'
+  description: 'Connect for sports, trips, and community'
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
