@@ -1,6 +1,7 @@
 import React from 'react'
 import BookingCard from '../../components/BookingCard'
 import { getSports } from '../../lib/data'
+import { SectionHeader, SearchBar } from '../../components/ui'
 
 export const metadata = {
   title: 'Sports Booking | Tribey',
@@ -11,8 +12,9 @@ export default async function SportsPage() {
   const sports = await getSports()
 
   return (
-    <section className="py-8">
-      <h2 className="text-2xl font-semibold mb-4">Sports Booking</h2>
+    <section className="py-8 space-y-6">
+      <SectionHeader title="Sports Booking" />
+      <SearchBar placeholder="Search turfs, courts..." />
       {sports.length === 0 ? (
         <p className="text-slate-500">No turfs listed yet.</p>
       ) : (

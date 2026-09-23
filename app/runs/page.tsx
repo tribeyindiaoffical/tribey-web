@@ -1,7 +1,7 @@
 import React from 'react'
 import { getRuns } from '../../lib/data'
 import MapPlaceholder from '../../components/MapPlaceholder'
-import IconUser from '../../components/IconUser'
+import { AvatarStack, Badge, Button, Card, SearchBar, SectionHeader } from '../../components/ui'
 
 export const metadata = {
   title: 'Runs & Rides | Tribey',
@@ -12,32 +12,31 @@ export default async function RunsPage() {
   const runs = await getRuns()
 
   return (
-    <section className="py-8">
-      <h2 className="text-2xl font-semibold mb-4">Run & Ride Clubs</h2>
+    <section className="py-8 space-y-6">
+      <SectionHeader title="Run & Ride Clubs" />
+      <SearchBar placeholder="Search clubs, routes, runners..." />
       {runs.length === 0 ? (
         <p className="text-slate-500">No runs scheduled yet.</p>
       ) : (
         <div className="space-y-4">
           {runs.map((r) => (
-            <div key={r.id} className="border rounded-lg p-4">
-              <div className="flex items-start gap-4">
-                <div className="flex-1">
-                  <h3 className="font-medium">{r.name}</h3>
+            <Card key={r.id} className="p-5">
+              <div className="flex items-start gap-5">
+                <div className="flex-1 min-w-0">
+                  <Badge>Run Club</Badge>
+                  <h3 className="mt-2 font-medium text-lg">{r.name}</h3>
                   <p className="text-sm text-slate-600">Start: {r.start}</p>
                   <p className="text-xs text-slate-500 mt-1">{r.route}</p>
-                  <div className="mt-3 flex items-center gap-3 flex-wrap">
-                    {r.booked.length > 0 ? (
-                      r.booked.map((u) => <IconUser key={u.id} name={u.name} />)
-                    ) : (
-                      <span className="text-sm text-slate-400">No one booked yet</span>
-                    )}
+                  <div className="mt-4 flex items-center justify-between gap-3 flex-wrap">
+                    <AvatarStack people={r.booked} />
+                    <Button variant="primary" disabled title="Booking coming soon">Join Club</Button>
                   </div>
                 </div>
-                <div className="w-40">
-                  <MapPlaceholder address={r.start} />
+                <div className="w-40 shrink-0 hidden sm:block">
+                  <MapPlaceholder address={r.start} className="rounded-xl" />
                 </div>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       )}

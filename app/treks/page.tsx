@@ -1,7 +1,7 @@
 import React from 'react'
 import { getTreks } from '../../lib/data'
 import MapPlaceholder from '../../components/MapPlaceholder'
-import IconUser from '../../components/IconUser'
+import { AvatarStack, Badge, Button, Card, SearchBar, SectionHeader } from '../../components/ui'
 
 export const metadata = {
   title: 'Treks & Camping | Tribey',
@@ -12,32 +12,31 @@ export default async function TreksPage() {
   const treks = await getTreks()
 
   return (
-    <section className="py-8">
-      <h2 className="text-2xl font-semibold mb-4">Treks & Camping</h2>
+    <section className="py-8 space-y-6">
+      <SectionHeader title="Treks & Camping" />
+      <SearchBar placeholder="Find trails, parks, or cities..." />
       {treks.length === 0 ? (
         <p className="text-slate-500">No treks planned yet.</p>
       ) : (
         <div className="space-y-4">
           {treks.map((t) => (
-            <div key={t.id} className="border rounded-lg p-4">
-              <div className="flex gap-4 items-start">
-                <div className="flex-1">
-                  <h3 className="font-medium">{t.name}</h3>
+            <Card key={t.id} className="p-5">
+              <div className="flex items-start gap-5">
+                <div className="flex-1 min-w-0">
+                  <Badge>Trek</Badge>
+                  <h3 className="mt-2 font-medium text-lg">{t.name}</h3>
                   <p className="text-sm text-slate-600">Start: {t.start}</p>
                   <p className="text-xs text-slate-500 mt-1">{t.info}</p>
-                  <div className="mt-3 flex gap-3 flex-wrap">
-                    {t.booked.length > 0 ? (
-                      t.booked.map((u) => <IconUser key={u.id} name={u.name} />)
-                    ) : (
-                      <span className="text-sm text-slate-400">No one booked yet</span>
-                    )}
+                  <div className="mt-4 flex items-center justify-between gap-3 flex-wrap">
+                    <AvatarStack people={t.booked} />
+                    <Button variant="primary" disabled title="Booking coming soon">Plan Trek</Button>
                   </div>
                 </div>
-                <div className="w-40">
-                  <MapPlaceholder address={t.start} />
+                <div className="w-40 shrink-0 hidden sm:block">
+                  <MapPlaceholder address={t.start} className="rounded-xl" />
                 </div>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       )}

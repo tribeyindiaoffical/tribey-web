@@ -3,6 +3,7 @@ import React from 'react'
 import Nav from '../components/Nav'
 import Sidebar from '../components/Sidebar'
 import Footer from '../components/Footer'
+import BottomNav from '../components/BottomNav'
 
 export const metadata = {
   title: 'Tribey',
@@ -12,14 +13,13 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white text-slate-800 antialiased">
+      <body className="min-h-screen bg-brand-surface text-slate-800 antialiased">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex gap-6">
             <Sidebar />
-            <div className="flex-1">
+            <div className="flex-1 pb-20 md:pb-0">
               <header className="py-4 md:py-6">
                 <div className="md:hidden">
-                  <img src="/logo.svg" alt="Tribey" className="h-7 w-auto" />
                   <Nav />
                 </div>
               </header>
@@ -30,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </div>
+        <BottomNav />
       </body>
     </html>
   )

@@ -2,6 +2,7 @@ import React from 'react'
 import { getRooms } from '../../lib/data'
 import genZ from '../../data/genZQuestions.json'
 import RoomListing from '../../components/RoomListing'
+import { SectionHeader, SearchBar, Card } from '../../components/ui'
 
 export const metadata = {
   title: 'Rooms & Roommates | Tribey',
@@ -12,8 +13,9 @@ export default async function RoomsPage() {
   const rooms = await getRooms()
 
   return (
-    <section className="py-8">
-      <h2 className="text-2xl font-semibold mb-4">Rooms & Roommates</h2>
+    <section className="py-8 space-y-6">
+      <SectionHeader title="Rooms & Roommates" />
+      <SearchBar placeholder="Search by area, rent, roommates..." />
       {rooms.length === 0 ? (
         <p className="text-slate-500">No listings yet.</p>
       ) : (
@@ -24,11 +26,11 @@ export default async function RoomsPage() {
         </div>
       )}
 
-      <div className="mt-8">
-        <h3 className="text-lg font-medium mb-2">Gen-Z Quick Prompts</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <div>
+        <SectionHeader title="Gen-Z Quick Prompts" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {genZ.map((q: string, i: number) => (
-            <div key={i} className="p-3 border rounded text-sm text-slate-600">{q}</div>
+            <Card key={i} className="p-3 text-sm text-slate-600">{q}</Card>
           ))}
         </div>
       </div>

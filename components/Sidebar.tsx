@@ -1,14 +1,17 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { categories } from '../lib/constants'
+
+const items = [
+  { href: '/', label: 'Home' },
+  { href: '/explore', label: 'Explore' },
+  ...categories.map((c) => ({ href: c.href, label: c.label }))
+]
 
 export default function Sidebar() {
-  const items = [
-    { href: '/', label: 'Home', icon: '/icons/map.svg' },
-    { href: '/sports', label: 'Sports', icon: '/icons/map.svg' },
-    { href: '/runs', label: 'Runs & Rides', icon: '/icons/map.svg' },
-    { href: '/treks', label: 'Treks', icon: '/icons/map.svg' },
-    { href: '/rooms', label: 'Rooms', icon: '/icons/map.svg' },
-    { href: '/tiffin', label: 'Tiffin', icon: '/icons/map.svg' }
-  ]
+  const pathname = usePathname()
 
   return (
     <aside className="hidden md:block w-64 pr-6">
@@ -17,13 +20,21 @@ export default function Sidebar() {
           <img src="/logo.svg" alt="Tribey" className="h-7 w-auto" />
           <div className="text-sm text-slate-500 mt-1">Connect · Book · Explore</div>
         </div>
-        <nav className="flex flex-col gap-2">
-          {items.map((it) => (
-            <Link key={it.href} href={it.href} className="flex items-center gap-3 px-3 py-2 rounded hover:bg-slate-50">
-              <img src={it.icon} alt="" className="w-5 h-5 text-slate-400" />
-              <span className="text-sm text-slate-700">{it.label}</span>
-            </Link>
-          ))}
+        <nav className="flex flex-col gap-1">
+          {items.map((it) => {
+            const active = it.href === '/' ? pathname === '/' : pathname.startsWith(it.href)
+            return (
+              <Link
+                key={it.href}
+                href={it.href}
+                className={`px-4 py-2.5 rounded-full text-sm font-medium transition ${
+                  active ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                {it.label}
+              </Link>
+            )
+          })}
         </nav>
       </div>
     </aside>
