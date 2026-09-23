@@ -1,9 +1,18 @@
 -- ============================================================
--- Cleanup: drop tables orphaned by removing Treks, Rooms, Tiffin.
--- DESTRUCTIVE. No other table has a foreign key into treks/rooms;
--- orders/subscribers/vendors form their own self-contained FK chain.
+-- Cleanup: drop tables orphaned by removing Treks, Rooms, Tiffin,
+-- plus anything from a previous partial run of this migration.
+-- DESTRUCTIVE. Dropped in child-before-parent order so no CASCADE
+-- is needed.
 -- ============================================================
-drop table if exists orders, subscribers, vendors, treks, rooms;
+drop table if exists community_messages;
+drop table if exists community_members;
+drop table if exists communities;
+drop table if exists profiles;
+drop table if exists orders;
+drop table if exists subscribers;
+drop table if exists vendors;
+drop table if exists treks;
+drop table if exists rooms;
 
 -- ============================================================
 -- profiles: one row per auth user, auto-provisioned on signup.
@@ -11,7 +20,8 @@ drop table if exists orders, subscribers, vendors, treks, rooms;
 -- email" from the client (auth.users isn't exposed via PostgREST).
 -- Select policy is deliberately NOT public — email is PII. A user
 -- can read their own row, or the row of anyone they share a
--- community with.
+-- community with (policy added further down, once community_members
+-- exists — it can't be created yet, the table doesn't exist here).
 -- ============================================================
 create table profiles (
   id uuid primary key references auth.users(id) on delete cascade,
@@ -21,16 +31,6 @@ create table profiles (
 );
 
 alter table profiles enable row level security;
-
-create policy "Read own profile or a shared community member's profile"
-  on profiles for select using (
-    auth.uid() = id
-    or exists (
-      select 1 from community_members cm1
-      join community_members cm2 on cm1.community_id = cm2.community_id
-      where cm1.user_id = profiles.id and cm2.user_id = auth.uid()
-    )
-  );
 
 create function handle_new_user()
 returns trigger
@@ -111,6 +111,17 @@ stable
 as $$
   select id from profiles where email = p_email;
 $$;
+
+-- Now that community_members exists, add the profiles select policy.
+create policy "Read own profile or a shared community member's profile"
+  on profiles for select using (
+    auth.uid() = id
+    or exists (
+      select 1 from community_members cm1
+      join community_members cm2 on cm1.community_id = cm2.community_id
+      where cm1.user_id = profiles.id and cm2.user_id = auth.uid()
+    )
+  );
 
 -- ============================================================
 -- community_messages
