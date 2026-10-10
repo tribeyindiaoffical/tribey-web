@@ -1,5 +1,4 @@
 import React from 'react'
-import type { Person } from '../lib/data'
 
 export function Card({ className = '', children }: { className?: string; children: React.ReactNode }) {
   return <div className={`bg-white rounded-2xl border border-slate-100 shadow-sm ${className}`}>{children}</div>
@@ -8,7 +7,7 @@ export function Card({ className = '', children }: { className?: string; childre
 export function Pill({ active = false, children }: { active?: boolean; children: React.ReactNode }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap ${
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap ${
         active ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200'
       }`}
     >
@@ -17,25 +16,56 @@ export function Pill({ active = false, children }: { active?: boolean; children:
   )
 }
 
-export function Badge({ children }: { children: React.ReactNode }) {
+const badgeTones = {
+  soft: 'bg-brand-orange/10 text-brand-orange',
+  solid: 'bg-brand-orange text-white',
+  neutral: 'bg-slate-100 text-slate-600',
+  green: 'bg-emerald-50 text-emerald-700'
+}
+
+export function Badge({
+  tone = 'soft',
+  className = '',
+  children
+}: {
+  tone?: keyof typeof badgeTones
+  className?: string
+  children: React.ReactNode
+}) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-brand-orange/15 text-brand-orange text-xs font-semibold px-2.5 py-1">
+    <span className={`inline-flex items-center gap-1 rounded-full text-[11px] font-semibold px-2 py-0.5 whitespace-nowrap ${badgeTones[tone]} ${className}`}>
       {children}
     </span>
   )
 }
 
+const buttonVariants = {
+  primary: 'bg-slate-900 text-white hover:opacity-90',
+  accent: 'bg-brand-orange text-white hover:opacity-90',
+  outline: 'border border-slate-300 text-slate-700 hover:bg-slate-50',
+  soft: 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+}
+
+const buttonSizes = {
+  md: 'px-5 py-2.5 text-sm',
+  sm: 'px-3.5 py-1.5 text-xs'
+}
+
+type ButtonVariant = keyof typeof buttonVariants
+type ButtonSize = keyof typeof buttonSizes
+
+// Shared with <Link>s that need to look like buttons.
+export function btn(variant: ButtonVariant = 'primary', size: ButtonSize = 'md') {
+  return `inline-flex items-center justify-center gap-1.5 rounded-full font-semibold whitespace-nowrap transition disabled:opacity-40 disabled:cursor-not-allowed ${buttonSizes[size]} ${buttonVariants[variant]}`
+}
+
 export function Button({
   variant = 'primary',
+  size = 'md',
   className = '',
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'outline' }) {
-  const base = 'rounded-full px-5 py-2.5 text-sm font-medium transition disabled:opacity-40 disabled:cursor-not-allowed'
-  const styles =
-    variant === 'primary'
-      ? 'bg-slate-900 text-white hover:opacity-90'
-      : 'border border-slate-300 text-slate-700 hover:bg-slate-50'
-  return <button className={`${base} ${styles} ${className}`} {...props} />
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: ButtonVariant; size?: ButtonSize }) {
+  return <button className={`${btn(variant, size)} ${className}`} {...props} />
 }
 
 export function SearchBar({ placeholder }: { placeholder: string }) {
@@ -50,39 +80,86 @@ export function SearchBar({ placeholder }: { placeholder: string }) {
   )
 }
 
-export function SectionHeader({ title, action }: { title: string; action?: React.ReactNode }) {
+export function SectionHeader({
+  title,
+  sub,
+  icon,
+  action
+}: {
+  title: string
+  sub?: string
+  icon?: React.ReactNode
+  action?: React.ReactNode
+}) {
   return (
-    <div className="flex items-center justify-between mb-4">
-      <h2 className="text-xl font-semibold text-brand-navy">{title}</h2>
+    <div className="flex items-end justify-between gap-3 mb-4">
+      <div className="flex items-center gap-2.5 min-w-0">
+        {icon && <span className="text-brand-orange shrink-0">{icon}</span>}
+        <div className="min-w-0">
+          <h2 className="text-xl font-semibold text-brand-navy leading-tight">{title}</h2>
+          {sub && <p className="text-xs text-slate-500">{sub}</p>}
+        </div>
+      </div>
       {action}
     </div>
   )
 }
 
-const avatarColors = ['from-pink-300 to-yellow-300', 'from-sky-300 to-indigo-300', 'from-emerald-300 to-teal-300', 'from-orange-300 to-rose-300']
-
-export function AvatarStack({ people, max = 4 }: { people: Person[]; max?: number }) {
-  if (people.length === 0) return <span className="text-sm text-slate-400">No one joined yet</span>
-
-  const shown = people.slice(0, max)
-  const overflow = people.length - shown.length
-
+export function Stat({
+  label,
+  value,
+  unit,
+  sub,
+  accent = false
+}: {
+  label: string
+  value: string
+  unit?: string
+  sub?: string
+  accent?: boolean
+}) {
   return (
-    <div className="flex items-center -space-x-2">
-      {shown.map((p, i) => (
+    <div className={`rounded-xl border p-3 ${accent ? 'bg-brand-orange/10 border-brand-orange/10' : 'bg-white border-slate-100'}`}>
+      <div className={`text-[10px] font-semibold uppercase tracking-wide ${accent ? 'text-brand-orange' : 'text-slate-500'}`}>{label}</div>
+      <div className={`mt-1 text-2xl font-semibold leading-tight ${accent ? 'text-brand-orange' : 'text-slate-900'}`}>
+        {value}
+        {unit && <span className="ml-1 text-xs font-normal text-slate-500">{unit}</span>}
+      </div>
+      {sub && <div className="text-[11px] text-slate-500">{sub}</div>}
+    </div>
+  )
+}
+
+const avatarColors = ['bg-brand-orange text-white', 'bg-slate-700 text-white', 'bg-orange-200 text-brand-orange', 'bg-slate-200 text-slate-600']
+
+export function AvatarStack({ initials, more }: { initials: string[]; more?: string }) {
+  return (
+    <div className="flex items-center -space-x-1">
+      {initials.map((label, i) => (
         <div
-          key={p.id}
-          title={p.name}
-          className={`w-8 h-8 rounded-full ring-2 ring-white bg-gradient-to-br ${avatarColors[i % avatarColors.length]} flex items-center justify-center text-white text-xs font-semibold`}
+          key={label}
+          className={`w-6 h-6 rounded-full ring-2 ring-white flex items-center justify-center text-[9px] font-bold ${avatarColors[i % avatarColors.length]}`}
         >
-          {p.name.charAt(0)}
+          {label}
         </div>
       ))}
-      {overflow > 0 && (
-        <div className="w-8 h-8 rounded-full ring-2 ring-white bg-slate-900 flex items-center justify-center text-white text-xs font-semibold">
-          +{overflow}
+      {more && (
+        <div className="h-6 px-1.5 rounded-full ring-2 ring-white bg-slate-100 flex items-center justify-center text-[9px] font-bold text-slate-600">
+          {more}
         </div>
       )}
     </div>
+  )
+}
+
+// points are heights 0–100, evenly spaced along the x axis.
+export function AreaChart({ points, className = 'h-24' }: { points: number[]; className?: string }) {
+  const step = 100 / (points.length - 1)
+  const line = points.map((p, i) => `${i ? 'L' : 'M'}${(i * step).toFixed(2)},${100 - p}`).join(' ')
+  return (
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className={`w-full text-brand-orange ${className}`} aria-hidden>
+      <path d={`${line} L100,100 L0,100 Z`} fill="currentColor" fillOpacity=".12" />
+      <path d={line} fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+    </svg>
   )
 }

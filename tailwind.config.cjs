@@ -8,10 +8,10 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          orange: '#FFAC59',
-          navy: '#025277',
-          teal: '#3883A3',
-          surface: '#F9F9FB'
+          orange: '#C2410C',
+          navy: '#18181B',
+          teal: '#C2410C',
+          surface: '#F4F5F7'
         }
       }
     }
