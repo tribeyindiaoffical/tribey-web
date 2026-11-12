@@ -24,12 +24,3 @@ export async function getCommunities() {
   if (error) throw error
   return data as Community[]
 }
-
-export async function getHighlights() {
-  const [sports, runs] = await Promise.all([getSports(), getRuns()])
-
-  return [
-    { href: '/sports', label: 'Sports', emoji: '⚽', title: sports[0]?.name, sub: sports[0]?.address },
-    { href: '/runs', label: 'Runs & Rides', emoji: '🏃', title: runs[0]?.name, sub: runs[0]?.route }
-  ].filter((h): h is typeof h & { title: string } => Boolean(h.title))
-}

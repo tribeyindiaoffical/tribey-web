@@ -2,19 +2,22 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Bell, CircleUser, Compass, House, Settings, UserRound, Users } from 'lucide-react'
+import { Bell, CircleUser, Compass, Settings, UserRound, Users } from 'lucide-react'
 import { me } from '../lib/mock'
+import { Notice, seedNotices, useStored } from '../lib/store'
 
 const items = [
-  { href: '/', label: 'Home', icon: House },
   { href: '/explore', label: 'Explore', icon: Compass },
   { href: '/community', label: 'Community', icon: Users },
-  { href: '/notifications', label: 'Notification', icon: Bell, count: 3 },
+  { href: '/notifications', label: 'Notification', icon: Bell },
   { href: '/profile', label: 'Profile', icon: CircleUser }
 ]
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const [profile] = useStored('profile', me)
+  const [notices] = useStored<Notice[]>('notices', seedNotices)
+  const unread = notices.filter((n) => !n.read).length
 
   return (
     <aside className="hidden md:flex w-56 shrink-0 sticky top-0 h-screen flex-col p-3 border-r border-slate-200/70">
@@ -31,15 +34,16 @@ export default function Sidebar() {
           <UserRound size={16} />
         </span>
         <span className="flex-1 min-w-0">
-          <span className="block text-sm font-semibold text-slate-900 truncate">{me.name}</span>
-          <span className="block text-[11px] text-slate-500 truncate">{me.role} • {me.classOf}</span>
+          <span className="block text-sm font-semibold text-slate-900 truncate">{profile.name}</span>
+          <span className="block text-[11px] text-slate-500 truncate">{profile.role} • {profile.classOf}</span>
         </span>
         <span className="w-2 h-2 rounded-full bg-brand-orange" />
       </Link>
 
       <nav className="mt-3 flex flex-col gap-1">
         {items.map((it) => {
-          const active = it.href === '/' ? pathname === '/' : pathname.startsWith(it.href)
+          const active = pathname.startsWith(it.href)
+          const count = it.href === '/notifications' ? unread : 0
           return (
             <Link
               key={it.href}
@@ -50,9 +54,9 @@ export default function Sidebar() {
             >
               <it.icon size={18} />
               <span className="flex-1">{it.label}</span>
-              {it.count && (
+              {count > 0 && (
                 <span className={`min-w-5 h-5 px-1.5 rounded-full text-[11px] font-bold flex items-center justify-center ${active ? 'bg-white text-brand-orange' : 'bg-brand-orange text-white'}`}>
-                  {it.count}
+                  {count}
                 </span>
               )}
             </Link>
@@ -70,7 +74,7 @@ export default function Sidebar() {
         </div>
         <div className="flex items-center justify-between px-2 pt-3 text-[11px] text-slate-500">
           <span>© {new Date().getFullYear()} Tribey</span>
-          <Settings size={15} />
+          <Link href="/profile?edit=1" aria-label="Edit profile settings" className="hover:text-brand-orange"><Settings size={15} /></Link>
         </div>
       </div>
     </aside>

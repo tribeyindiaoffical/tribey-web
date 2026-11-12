@@ -4,6 +4,7 @@ import { Outfit } from 'next/font/google'
 import Nav from '../components/Nav'
 import Sidebar from '../components/Sidebar'
 import BottomNav from '../components/BottomNav'
+import { Toaster } from '../components/interactive'
 
 const font = Outfit({ subsets: ['latin'] })
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </div>
         <BottomNav />
+        <Toaster />
       </body>
     </html>
   )

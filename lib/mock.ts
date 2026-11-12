@@ -15,26 +15,31 @@ export const me = {
 
 // ---------- Explore ----------
 
-export const hubs = ['All Hubs', 'Sports & Turf', 'Travel & Treks', 'Run Clubs', 'Party & Socials', 'Hackathons & Tech', 'Creative Arts']
+export const hubs = ['All Hubs', 'Sports & Turf', 'Travel & Treks', 'Run Clubs', 'Party & Socials']
 
 export const events = [
   {
-    month: 'OCT',
-    day: '12',
+    id: 'hackcampus',
+    hub: '',
+    date: '2026-11-21T09:00:00',
+    hours: 36,
     tag: 'Tech & Build',
     when: 'Sat • 09:00 AM - 36h',
     where: 'Student Union Hall B',
-    title: 'HackCampus 2024: Next-Gen AI & Climate',
+    title: 'HackCampus 2026: Next-Gen AI & Climate',
     desc: 'Join 400+ builders, designers, and founders to create breakthrough projects with $15K in bounties and tech mentor reviews.',
     initials: ['IK', 'JD'],
     more: '+84',
-    count: '142 joined',
+    count: 142,
+    countLabel: 'joined',
     cta: 'Register',
     photo: img('1522071820081-009f0129c71c')
   },
   {
-    month: 'OCT',
-    day: '15',
+    id: 'unplugged-open-mic',
+    hub: 'Party & Socials',
+    date: '2026-11-17T19:30:00',
+    hours: 3,
     tag: 'Acoustic & Poetry',
     when: 'Tue • 07:30 PM',
     where: 'The Attic Commons Cafe',
@@ -42,13 +47,16 @@ export const events = [
     desc: 'Original songs, spoken word, and improv acoustic performances. Warm apple cider and fresh pastries provided by the Arts Guild.',
     initials: ['AL', 'SF'],
     more: '+49',
-    count: '58 RSVP',
+    count: 58,
+    countLabel: 'RSVP',
     cta: 'Free Ticket',
     photo: img('1510915361894-db8b60106cb1')
   },
   {
-    month: 'OCT',
-    day: '18',
+    id: 'football-derby',
+    hub: 'Sports & Turf',
+    date: '2026-11-20T17:00:00',
+    hours: 3,
     tag: 'Varsity Cup',
     when: 'Fri • 05:00 PM',
     where: 'South Turf Stadium 2',
@@ -56,60 +64,21 @@ export const events = [
     desc: 'Engineering vs Management in the inaugural Fall Cup. Cheer squads, live DJ, food trucks, and tournament trophy ceremony.',
     initials: ['MG', 'TT'],
     more: '+190',
-    count: '210 attending',
+    count: 210,
+    countLabel: 'attending',
     cta: 'Join Squad',
     photo: img('1431324155629-1a6deb1dec8d')
   }
 ]
 
-export const trending = [
-  {
-    name: 'Varsity Tennis Club',
-    badge: 'Top Active',
-    desc: 'Weekly rallies, beginner coaching clinics, and intra-university doubles ladder.',
-    members: '1.4k members',
-    note: '4 court slots open',
-    joined: true
-  },
-  {
-    name: 'Design Thinkers Collective',
-    badge: 'Weekly Sprints',
-    desc: 'UX/UI design critiques, portfolio teardowns, and design-system deep dives.',
-    members: '890 members',
-    note: 'Workshop in 2d',
-    joined: false
-  },
-  {
-    name: 'Audio Engineering Society',
-    badge: 'Studio Pass',
-    desc: 'Mixing and mastering masterclasses, synthesizers, and recording studio booking access.',
-    members: '620 members',
-    note: 'Next meet Thursday',
-    joined: false
-  },
-  {
-    name: 'Midnight & Dawn Runners',
-    badge: 'Daily 6AM',
-    desc: 'Urban 5k campus loops, track sprint intervals, and Sunday river trail recovery jogs.',
-    members: '2.1k runners',
-    note: 'Route mapped',
-    joined: false
-  }
-]
-
-export const organizers = [
-  { initials: 'MK', name: 'Maya Kapoor', role: 'Founder, RunCampus (1.2k)' },
-  { initials: 'DA', name: 'David Alvarez', role: 'Captain, 7v7 Intramurals' },
-  { initials: 'SL', name: 'Sarah Lin', role: "Lead, HackCampus '24" }
-]
-
 // ---------- Treks ----------
 
-export const trekTabs = ['All Routes', 'Weekend Treks', 'Mountain Trails', 'Lakes & Waterfalls', 'Carpool Rides']
+export const trekTabs = ['All Routes', 'Weekend Treks', 'Mountain Trails', 'Lakes & Waterfalls']
 
 export const treks = [
   {
     id: 'lake-blanche',
+    cats: ['Lakes & Waterfalls', 'Mountain Trails'],
     tag: 'Featured',
     region: 'Twin Peaks Wilderness',
     name: 'Lake Blanche Trail',
@@ -120,12 +89,13 @@ export const treks = [
     gain: '2,726',
     time: '4h 45m',
     price: '',
-    footer: 'Campus Carpool: Oct 18 • 6:30 AM',
-    footerRight: '4 Seats Left',
+    footer: 'Batch Oct 18 • 6:30 AM',
+    footerRight: 'View Batch',
     photo: '1501785888041-af3ef285b470'
   },
   {
     id: 'chanshal-pass',
+    cats: ['Weekend Treks', 'Mountain Trails'],
     tag: 'Weekend',
     region: 'Rohru Alpine Valley',
     name: 'Chanshal Pass Ridge Trek',
@@ -142,6 +112,7 @@ export const treks = [
   },
   {
     id: 'pine-ridge',
+    cats: ['Weekend Treks'],
     tag: 'Day Trip',
     region: 'North Cascade Foothills',
     name: 'Pine Ridge Fall Foliage',
@@ -151,13 +122,14 @@ export const treks = [
     dist: '4.8',
     gain: '1,180',
     time: '3h 15m',
-    price: 'Free (Carpool opt)',
+    price: 'Free',
     footer: 'Batch Nov 02 • 14 Students Going',
     footerRight: 'View Batch',
     photo: '1441974231531-c6227db76b6e'
   },
   {
     id: 'hampta-pass',
+    cats: ['Mountain Trails', 'Lakes & Waterfalls'],
     tag: 'Break Special',
     region: 'Pir Panjal Range',
     name: 'Hampta Pass & Chandratal',
@@ -186,7 +158,8 @@ export const runClubs = [
     name: 'Midnight & Dawn Runners',
     badge: 'Official Chapter',
     when: 'Daily 6:00 AM • University Main Quad to Riverwalk',
-    count: '2,140',
+    tags: ['Morning 5K Loops'],
+    count: 2140,
     countLabel: 'Active Runners',
     desc: 'Pacing every morning from easy recovery jogs (6:30/km) to sub-22 tempo groups. Free hydration and bag drops at the South Quad locker hall.',
     facts: [
@@ -198,15 +171,15 @@ export const runClubs = [
     more: '+94',
     note: 'joined this semester',
     secondary: 'View Routes',
-    cta: 'Joined',
-    joined: true
+    cta: 'Join Chapter'
   },
   {
     id: 'trail-pacers',
     name: 'Campus Trail Pacers',
     badge: 'Scenic & Hills',
     when: 'Sundays 8:30 AM • Botanical Gardens North Gate',
-    count: '320',
+    tags: ['Weekend Long Runs'],
+    count: 320,
     countLabel: 'Trail Runners',
     desc: 'Technical single-tracks, dirt paths, and elevation repeats through University Woods. Elevation gain averages +140m per weekend excursion.',
     facts: [
@@ -218,15 +191,15 @@ export const runClubs = [
     more: '+18',
     note: '12 spots left for Sun',
     secondary: 'Elevation Chart',
-    cta: 'Join Club',
-    joined: false
+    cta: 'Join Club'
   },
   {
     id: 'marathon-prep',
     name: 'Varsity Marathon Prep Squad',
     badge: 'High Intensity',
     when: 'Saturdays 6:30 AM • Outdoor Athletic Stadium Track',
-    count: '180',
+    tags: ['Track & Intervals', 'Marathon Prep', 'Weekend Long Runs'],
+    count: 180,
     countLabel: 'Endurance Squad',
     desc: 'Structured marathon periodization program targeting Fall 10K, Half-Marathon, and Boston qualifying benchmarks. Weekly 15k to 28k long blocks.',
     facts: [
@@ -238,10 +211,18 @@ export const runClubs = [
     more: '+42',
     note: 'Training week 8 of 12',
     secondary: 'View Syllabus',
-    cta: 'Join Prep',
-    joined: false
+    cta: 'Join Prep'
   }
 ]
+
+export const race = {
+  id: 'race:fall-10k',
+  title: 'Annual Campus 10K & Half-Marathon',
+  start: '2026-11-26T07:30:00',
+  where: 'West Gate Oval',
+  registered: 840,
+  capacity: 1000
+}
 
 export const paceBoard = [
   { initials: 'LK', name: 'Liam K.', sub: "MechEng '24", km: '64.2', pace: '4:18' },
@@ -253,11 +234,36 @@ export const paceBoard = [
 
 // ---------- Parties ----------
 
-export const partyTabs = ['All Socials', 'House Parties & Dorm Mixers', 'Campus Club Nights', 'Live Band & DJ Gigs', 'Acoustic & Rooftop Jam', 'Post-Exam Afterparties']
-export const partyDates = ['Tonight (Fri, 24 Oct)', 'Tomorrow (Sat, 25 Oct)', 'Halloween Weekend', 'Next Friday']
+// Kickbacks = informal, student-hosted. Headliners = formal, ticketed big events.
+export const partyModes = {
+  kickbacks: {
+    label: 'Kickbacks',
+    sub: 'House parties & chill hangouts',
+    tabs: ['All Kickbacks', 'House Parties', 'Dorm Mixers', 'Rooftop Jams', 'Tailgates & BBQs']
+  },
+  headliners: {
+    label: 'Headliners',
+    sub: 'Big nights & ticketed events',
+    tabs: ['All Headliners', 'Club Nights', 'DJ & Live Gigs', 'Comedy & Open Mic', 'Post-Exam Blowouts']
+  }
+}
+export const partyDates = ['Tonight', 'Tomorrow', 'This Weekend', 'Next Week']
+
+export const headliner = {
+  id: 'neon-rave',
+  title: 'Annual Fall Semester Neon Rave & Rooftop Mixer',
+  when: 'Saturday, Nov 14 • 8:00 PM Onwards',
+  day: 'This Weekend',
+  kinds: ['DJ & Live Gigs'],
+  going: 380,
+  friends: ['Liam K.', 'Sarah Zhao', "Tara O'Connor", 'Marcus Reyes', 'Maya Lin', 'David Chen']
+}
 
 export const houseParties = [
   {
+    id: 'retro-arcade',
+    kinds: ['House Parties', 'Dorm Mixers'],
+    day: 'Tonight',
     status: '28/40 Filled',
     tag: 'BYOB + Snacks',
     place: 'Sector 3 Penthouse',
@@ -269,6 +275,9 @@ export const houseParties = [
     photo: img('1511882150382-421056c89033', 600)
   },
   {
+    id: 'rooftop-jam',
+    kinds: ['Rooftop Jams'],
+    day: 'Tomorrow',
     status: '15 spots left',
     tag: 'Acoustic Chill',
     place: 'Terrace Block C',
@@ -280,6 +289,9 @@ export const houseParties = [
     photo: img('1475483768296-6163e08872a1', 600)
   },
   {
+    id: 'senior-block-party',
+    kinds: ['Tailgates & BBQs'],
+    day: 'This Weekend',
     status: '140 Registered',
     tag: 'Free w/ Student ID',
     place: 'North Quad Courtyard',
@@ -294,6 +306,9 @@ export const houseParties = [
 
 export const clubNights = [
   {
+    id: 'electric-mirage',
+    kinds: ['Club Nights', 'DJ & Live Gigs'],
+    day: 'Tonight',
     badge: 'Official Partner',
     venue: 'Indigo XP, Koramangala',
     when: 'Tonight, 9:00 PM',
@@ -305,6 +320,9 @@ export const clubNights = [
     photo: img('1514525253161-7a46d19cd819', 300)
   },
   {
+    id: 'standup-open-mic',
+    kinds: ['Comedy & Open Mic'],
+    day: 'This Weekend',
     badge: 'Campus Open Mic',
     venue: 'That Comedy Club, Indiranagar',
     when: 'Sat, 7:30 PM',
@@ -316,6 +334,9 @@ export const clubNights = [
     photo: img('1511671782779-c97d3d27a1d4', 300)
   },
   {
+    id: 'bollywood-retro',
+    kinds: ['Post-Exam Blowouts', 'Club Nights'],
+    day: 'This Weekend',
     badge: 'Post-Exam Special',
     venue: 'High Note Lounge, MG Road',
     when: 'Sun, 8:00 PM',
@@ -334,23 +355,29 @@ export const disciplines = ['Football 7v7', 'Pickleball', 'Tennis', 'Basketball'
 
 export const venues = [
   {
+    id: 'kickoff-hsr',
     name: 'KickOff Arena HSR',
     area: 'Sector 2 • 1.2 km away',
-    price: '₹180',
+    km: 1.2,
+    sports: ['Football 7v7', 'Basketball'],
+    price: 180,
+    was: 320,
     rating: '4.8',
     note: '4 Open Games Today',
     cta: 'View Lineup',
-    selected: true,
     photo: img('1574629810360-7efbbe195018')
   },
   {
+    id: 'velocity',
     name: 'Velocity Arena',
     area: 'Koramangala • 2.4 km away',
-    price: '₹220',
+    km: 2.4,
+    sports: ['Pickleball', 'Tennis', 'Basketball', 'Badminton'],
+    price: 220,
+    was: 300,
     rating: '4.6',
     note: 'Rubber Multi-Court',
     cta: '2 Open Slots',
-    selected: false,
     photo: img('1554068865-24cecd4e34b8')
   }
 ]
@@ -360,32 +387,11 @@ export const lineup = [
   { initials: 'DK', label: 'Dev (GK)', x: 50, y: 82, tone: 'amber' },
   { initials: 'SK', label: 'Sid (CB)', x: 27, y: 58, tone: 'light' },
   { initials: 'RV', label: 'Rahul (CM)', x: 50, y: 40, tone: 'solid' },
-  { initials: 'IK', label: 'Insan (LM)', x: 19, y: 36, tone: 'solid' },
+  { initials: 'KB', label: 'Kabir (LM)', x: 19, y: 36, tone: 'solid' },
   { initials: 'AS', label: 'Arjun (ST)', x: 26, y: 14, tone: 'solid' },
-  { initials: '', label: 'Claim ST', x: 74, y: 14, tone: 'open' },
+  { initials: '', label: 'Open (ST)', x: 74, y: 14, tone: 'open' },
   { initials: '', label: 'Open (RM)', x: 81, y: 36, tone: 'open' },
   { initials: '', label: 'Open (CB)', x: 73, y: 58, tone: 'open' }
 ]
 
-// ---------- Profile ----------
-
-export const myCommunities = [
-  { initials: 'AI', name: 'Hackathon Builders Hub', sub: '840 student hackers' },
-  { initials: 'OS', name: 'Open Source Lab', sub: '1.2k developers' },
-  { initials: 'RC', name: 'Campus Trail Runners', sub: '320 runners' }
-]
-
-export const reviews = [
-  {
-    text: 'Great team player! Always keeps the morale high during late-night coding sessions.',
-    name: 'Mike Thornton',
-    role: 'Hackathon Teammate • Senior Design',
-    avatar: img('1500648767791-00dcc994a43e', 96)
-  },
-  {
-    text: 'Always brings the best energy to group projects. 10/10 would collab again.',
-    name: 'Sarah Chen',
-    role: 'Co-lead • Campus Run 5K',
-    avatar: img('1494790108377-be9c29b29330', 96)
-  }
-]
+export const turfSlots = ['Today, 07:00 PM – 08:30 PM', 'Today, 08:30 PM – 10:00 PM', 'Tomorrow, 06:00 AM – 07:30 AM']

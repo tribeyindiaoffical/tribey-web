@@ -4,15 +4,18 @@ export function Card({ className = '', children }: { className?: string; childre
   return <div className={`bg-white rounded-2xl border border-slate-100 shadow-sm ${className}`}>{children}</div>
 }
 
-export function Pill({ active = false, children }: { active?: boolean; children: React.ReactNode }) {
+export function Pill({ active = false, onClick, children }: { active?: boolean; onClick?: () => void; children: React.ReactNode }) {
   return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap ${
-        active ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200'
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition ${
+        active ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-400'
       }`}
     >
       {children}
-    </span>
+    </button>
   )
 }
 
@@ -66,18 +69,6 @@ export function Button({
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: ButtonVariant; size?: ButtonSize }) {
   return <button className={`${btn(variant, size)} ${className}`} {...props} />
-}
-
-export function SearchBar({ placeholder }: { placeholder: string }) {
-  return (
-    <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-400">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="11" cy="11" r="7" />
-        <path d="m21 21-4.3-4.3" />
-      </svg>
-      <span className="text-sm">{placeholder}</span>
-    </div>
-  )
 }
 
 export function SectionHeader({

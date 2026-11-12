@@ -14,15 +14,15 @@ export const categories = [
   {
     href: '/treks',
     label: 'Travel & Treks',
-    desc: 'Weekend mountain hikes, camping caravans, coastal road trips, and student travel discounts.',
+    desc: 'Weekend mountain hikes, camping trips, coastal getaways, and student travel discounts.',
     emoji: '🥾',
     icon: Mountain,
-    links: ['Pine Ridge Fall Trek (Oct 26)', 'Carpool Rideshare Board'],
+    links: ['Pine Ridge Fall Trek (Oct 26)', 'Chanshal Pass Ridge Trek (Oct 25)'],
     stat: '6 Trips Booking',
     cta: 'Explore 8 groups'
   },
   {
-    href: '/runs',
+    href: '/sports#run-clubs',
     label: 'Run Clubs & Pace',
     desc: 'Track intervals, Sunday long runs, 10k prep, and social coffee jog sessions organized by pace groups.',
     emoji: '🏃',

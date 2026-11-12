@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { getCommunities } from '../../lib/data'
-import { Card, Button, SectionHeader } from '../../components/ui'
+import { Card, SectionHeader, btn } from '../../components/ui'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,8 +17,8 @@ export default async function CommunityPage() {
       <SectionHeader
         title="Community"
         action={
-          <Link href="/community/create">
-            <Button variant="primary">Create a community</Button>
+          <Link href="/community/create" className={btn('primary')}>
+            Create a community
           </Link>
         }
       />
