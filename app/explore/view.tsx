@@ -2,14 +2,15 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { ArrowRight, CalendarDays, CalendarPlus, Check, ChevronLeft, ChevronRight, Clock, MapPin, Plus, Search, SlidersHorizontal, Trash2 } from 'lucide-react'
+import { ArrowRight, CalendarDays, CalendarPlus, Check, ChevronLeft, ChevronRight, Clock, MapPin, Plus, Search, Share2, SlidersHorizontal, Trash2, UserPlus, X } from 'lucide-react'
 import { categories } from '../../lib/constants'
-import { events as seedEvents, hubs, img } from '../../lib/mock'
-import { downloadIcs, notify, usePlans, useStored } from '../../lib/store'
+import { disciplines, events as seedEvents, hubs, img } from '../../lib/mock'
+import { Plan, downloadIcs, notify, share, usePlans, useStored } from '../../lib/store'
 import { AvatarStack, Button, Card, Pill, SectionHeader } from '../../components/ui'
 import { Field, Modal, fieldClass } from '../../components/interactive'
+import { PositionModal, PositionSection, usePositions } from '../../components/PositionBoard'
 
-type Event = (typeof seedEvents)[number] & { mine?: boolean }
+type Event = Omit<(typeof seedEvents)[number], 'sport'> & { sport?: string; mine?: boolean }
 
 const PAGE = 3
 const hubPhotos: Record<string, string> = {
@@ -25,6 +26,7 @@ const fmtWhen = (iso: string) =>
 const matches = (q: string, ...fields: string[]) => !q || fields.some((f) => f.toLowerCase().includes(q.toLowerCase()))
 
 function CreateEventModal({ onClose, onCreate }: { onClose: () => void; onCreate: (e: Event) => void }) {
+  const [hub, setHub] = useState('Party & Socials')
   return (
     <Modal title="Create an event or club meetup" onClose={onClose}>
       <form
@@ -33,11 +35,11 @@ function CreateEventModal({ onClose, onCreate }: { onClose: () => void; onCreate
           ev.preventDefault()
           const f = new FormData(ev.currentTarget)
           const get = (k: string) => String(f.get(k) ?? '').trim()
-          const hub = get('hub')
           const date = `${get('date')}T${get('time') || '18:00'}:00`
           onCreate({
             id: `mine-${crypto.randomUUID()}`,
             hub,
+            sport: hub === 'Sports & Turf' ? get('sport') : undefined,
             date,
             hours: 2,
             tag: hub || 'Meetup',
@@ -49,7 +51,7 @@ function CreateEventModal({ onClose, onCreate }: { onClose: () => void; onCreate
             more: '',
             count: 0,
             countLabel: 'going',
-            cta: 'RSVP',
+            cta: hub === 'Sports & Turf' ? 'Join Squad' : 'RSVP',
             photo: hubPhotos[hub] ?? img('1522071820081-009f0129c71c'),
             mine: true
           })
@@ -70,15 +72,67 @@ function CreateEventModal({ onClose, onCreate }: { onClose: () => void; onCreate
           <input name="where" required maxLength={80} className={fieldClass} placeholder="North Quad lawn" />
         </Field>
         <Field label="Hub">
-          <select name="hub" className={fieldClass} defaultValue="Party & Socials">
+          <select name="hub" className={fieldClass} value={hub} onChange={(e) => setHub(e.target.value)}>
             {hubs.slice(1).map((h) => <option key={h}>{h}</option>)}
           </select>
         </Field>
+        {hub === 'Sports & Turf' && (
+          <Field label="Sport">
+            <select name="sport" className={fieldClass}>
+              {disciplines.map((d) => <option key={d}>{d}</option>)}
+            </select>
+          </Field>
+        )}
         <Field label="Description">
           <textarea name="desc" rows={3} maxLength={300} className={fieldClass} />
         </Field>
         <Button variant="accent" className="w-full">Publish event</Button>
       </form>
+    </Modal>
+  )
+}
+
+function EventModal({ event: e, going, onToggle, onClose }: { event: Event; going: boolean; onToggle: (on: boolean) => void; onClose: () => void }) {
+  const d = new Date(e.date)
+  return (
+    <Modal title={e.title} onClose={onClose} wide>
+      <div className="-mt-2 space-y-4">
+        <img src={e.photo} alt="" className="w-full h-44 object-cover rounded-xl bg-slate-200" />
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">
+          <span className="rounded-full bg-brand-orange/10 px-2 py-0.5 font-semibold text-brand-orange">{e.tag}</span>
+          <span className="flex items-center gap-1"><CalendarDays size={13} /> {d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}</span>
+          <span className="flex items-center gap-1"><Clock size={13} /> {e.when}</span>
+          <span className="flex items-center gap-1"><MapPin size={13} /> {e.where}</span>
+        </div>
+        <p className="text-sm text-slate-700">{e.desc}</p>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="flex items-center gap-2 text-xs text-slate-500 mr-auto">
+            <AvatarStack initials={e.initials} more={e.more} />
+            {e.count + (going ? 1 : 0)} {e.countLabel}
+          </span>
+          <Button variant="soft" size="sm" onClick={() => share(`/explore?q=${encodeURIComponent(e.title)}`, e.title)}><Share2 size={13} /> Share</Button>
+          <Button variant="soft" size="sm" onClick={() => downloadIcs(e.title, d, e.hours, e.where)}><CalendarPlus size={13} /> Calendar</Button>
+          {!e.sport && (
+            <Button size="sm" variant={going ? 'soft' : 'accent'} onClick={() => onToggle(!going)}>
+              {going ? <><X size={13} /> Cancel RSVP</> : <><Check size={13} /> {e.cta}</>}
+            </Button>
+          )}
+        </div>
+        {e.sport && (
+          <div className="border-t border-slate-100 pt-4">
+            <h3 className="flex items-center gap-2 text-base font-semibold text-slate-900"><UserPlus size={17} className="text-brand-orange" /> {e.sport} squad</h3>
+            <p className="mb-3 text-xs text-slate-500">See which positions are filled and post where you play. Posting adds you to the squad.</p>
+            <PositionSection
+              sport={e.sport}
+              context={e.id}
+              label={e.title}
+              href="/explore"
+              onPosted={() => !going && onToggle(true)}
+              onWithdrawn={() => going && onToggle(false)}
+            />
+          </div>
+        )}
+      </div>
     </Modal>
   )
 }
@@ -91,7 +145,11 @@ export default function ExploreView({ initialQuery = '' }: { initialQuery?: stri
   const [creating, setCreating] = useState(false)
   const [start, setStart] = useState(0)
   const [myEvents, setMyEvents] = useStored<Event[]>('myEvents', [])
+  const [openId, setOpenId] = useState<string | null>(null)
+  const [positionSport, setPositionSport] = useState<string | null>(null)
   const { has, toggle } = usePlans()
+  const positions = usePositions()
+  const eventPlan = (e: Event): Plan => ({ id: `event:${e.id}`, title: e.title, kind: e.sport ? 'Joined squad' : 'RSVP', when: e.when, href: '/explore' })
 
   const all: Event[] = [...myEvents, ...seedEvents].sort((a, b) => a.date.localeCompare(b.date))
   const shown = all.filter(
@@ -226,8 +284,9 @@ export default function ExploreView({ initialQuery = '' }: { initialQuery?: stri
               const d = new Date(e.date)
               return (
                 <Card key={e.id} className="p-3 flex flex-col">
+                  <button type="button" onClick={() => setOpenId(e.id)} aria-label={`Open ${e.title}`} className="group flex flex-1 flex-col text-left">
                   <div className="relative">
-                    <img src={e.photo} alt="" loading="lazy" className="w-full h-40 object-cover rounded-xl bg-slate-200" />
+                    <img src={e.photo} alt="" loading="lazy" className="w-full h-40 object-cover rounded-xl bg-slate-200 transition group-hover:brightness-95" />
                     <div className="absolute top-2 left-2 rounded-lg bg-white px-2.5 py-1 text-center leading-none shadow-sm">
                       <div className="text-[9px] font-bold text-brand-orange">{d.toLocaleString('en-US', { month: 'short' }).toUpperCase()}</div>
                       <div className="text-lg font-bold text-slate-900">{d.getDate()}</div>
@@ -238,8 +297,9 @@ export default function ExploreView({ initialQuery = '' }: { initialQuery?: stri
                     <span className="flex items-center gap-1"><Clock size={12} /> {e.when}</span>
                     <span className="flex items-center gap-1"><MapPin size={12} /> {e.where}</span>
                   </div>
-                  <h3 className="mt-2 text-lg font-semibold text-slate-900 leading-snug">{e.title}</h3>
+                  <h3 className="mt-2 text-lg font-semibold text-slate-900 leading-snug group-hover:text-brand-orange">{e.title}</h3>
                   <p className="mt-1 text-sm text-slate-600 flex-1">{e.desc}</p>
+                  </button>
                   <div className="mt-4 flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 text-xs text-slate-500">
                       <AvatarStack initials={e.initials} more={e.more} />
@@ -253,7 +313,8 @@ export default function ExploreView({ initialQuery = '' }: { initialQuery?: stri
                           aria-label="Delete event"
                           onClick={() => {
                             setMyEvents((list) => list.filter((x) => x.id !== e.id))
-                            if (going) toggle({ id, title: e.title, kind: 'RSVP', href: '/explore' })
+                            if (e.sport) positions.set(e.id, e.sport, null)
+                            if (going) toggle(eventPlan(e))
                           }}
                         >
                           <Trash2 size={13} />
@@ -266,9 +327,15 @@ export default function ExploreView({ initialQuery = '' }: { initialQuery?: stri
                         size="sm"
                         variant={going ? 'accent' : 'primary'}
                         aria-pressed={going}
-                        onClick={() => toggle({ id, title: e.title, kind: 'RSVP', when: e.when, href: '/explore' })}
+                        onClick={() => (e.sport ? setOpenId(e.id) : toggle(eventPlan(e)))}
                       >
-                        {going ? <><Check size={13} /> Going</> : e.cta}
+                        {e.sport && positions.get(e.id, e.sport) ? (
+                          <><Check size={13} /> {positions.get(e.id, e.sport)!.position}</>
+                        ) : going ? (
+                          <><Check size={13} /> Going</>
+                        ) : (
+                          e.cta
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -300,6 +367,11 @@ export default function ExploreView({ initialQuery = '' }: { initialQuery?: stri
                     </Link>
                   ))}
                 </div>
+                {c.href === '/sports' && (
+                  <Button variant="accent" size="sm" className="mt-3 w-full !rounded-lg !py-2" onClick={() => setPositionSport(disciplines[0])}>
+                    <UserPlus size={14} /> Post your position
+                  </Button>
+                )}
                 <div className="mt-4 flex items-center justify-between text-[11px]">
                   <span className="text-slate-500">{c.stat}</span>
                   <Link href={c.href} className="font-semibold text-brand-orange">{c.cta}</Link>
@@ -309,6 +381,20 @@ export default function ExploreView({ initialQuery = '' }: { initialQuery?: stri
           </div>
         )}
       </div>
+
+      {openId && all.some((e) => e.id === openId) && (() => {
+        const e = all.find((x) => x.id === openId)!
+        return (
+          <EventModal
+            event={e}
+            going={has(`event:${e.id}`)}
+            onToggle={(on) => on !== has(`event:${e.id}`) && toggle(eventPlan(e))}
+            onClose={() => setOpenId(null)}
+          />
+        )
+      })()}
+
+      {positionSport && <PositionModal initialSport={positionSport} onClose={() => setPositionSport(null)} />}
 
       {creating && (
         <CreateEventModal

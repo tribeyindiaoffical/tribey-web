@@ -1,11 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowRight, BadgeCheck, Bus, CalendarDays, Check, ChevronRight, Dumbbell, Plus, SlidersHorizontal, Star, Target, Trash2, X } from 'lucide-react'
+import { ArrowRight, BadgeCheck, UserPlus, Bus, CalendarDays, Check, ChevronRight, Dumbbell, Plus, SlidersHorizontal, Star, Target, Trash2, X } from 'lucide-react'
 import { disciplines, lineup, turfSlots, venues } from '../../lib/mock'
 import { notify, usePlans, useStored } from '../../lib/store'
 import { Badge, Button, Card } from '../../components/ui'
 import { Field, fieldClass } from '../../components/interactive'
+import { PositionModal } from '../../components/PositionBoard'
 
 const dotTones: Record<string, string> = {
   solid: 'bg-brand-orange text-white',
@@ -34,6 +35,7 @@ export default function SportsView() {
   const [venueId, setVenueId] = useState(venues[0].id)
   const [time, setTime] = useState(turfSlots[0])
   const [showShuttle, setShowShuttle] = useState(false)
+  const [postingPosition, setPostingPosition] = useState(false)
   const [claim, setClaim] = useStored<Claim>('turfClaim', null)
   const [hosted, setHosted] = useStored<HostedGame[]>('hostedGames', [])
   const { has, toggle } = usePlans()
@@ -101,9 +103,12 @@ export default function SportsView() {
               <h2 className="text-lg font-semibold text-slate-900">Choose Discipline</h2>
               <span className="text-[11px] text-slate-500">{disciplines.length} sports active</span>
             </div>
-            <button type="button" onClick={() => setByPrice((v) => !v)} className="flex items-center gap-1.5 text-xs font-semibold text-brand-orange">
-              <SlidersHorizontal size={13} /> Sort: {byPrice ? 'Lowest price' : 'Nearest'}
-            </button>
+            <div className="flex items-center gap-3">
+              <button type="button" onClick={() => setByPrice((v) => !v)} className="flex items-center gap-1.5 text-xs font-semibold text-brand-orange">
+                <SlidersHorizontal size={13} /> Sort: {byPrice ? 'Lowest price' : 'Nearest'}
+              </button>
+              <Button variant="accent" size="sm" onClick={() => setPostingPosition(true)}><UserPlus size={13} /> Post your position</Button>
+            </div>
           </div>
           <div className="mt-3 flex gap-2 overflow-x-auto">
             {disciplines.map((d) => (
@@ -385,6 +390,7 @@ export default function SportsView() {
           )
         )}
       </div>
+      {postingPosition && <PositionModal initialSport={discipline} onClose={() => setPostingPosition(false)} />}
     </section>
   )
 }

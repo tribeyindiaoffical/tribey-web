@@ -15,7 +15,7 @@ export function Field({ label, children }: { label: string; children: React.Reac
   )
 }
 
-export function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
+export function Modal({ title, onClose, wide = false, children }: { title: string; onClose: () => void; wide?: boolean; children: React.ReactNode }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
@@ -25,7 +25,7 @@ export function Modal({ title, onClose, children }: { title: string; onClose: ()
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
       <button type="button" aria-label="Close" className="absolute inset-0 cursor-default" onClick={onClose} />
-      <div role="dialog" aria-modal="true" aria-label={title} className="relative w-full max-w-lg max-h-full overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl">
+      <div role="dialog" aria-modal="true" aria-label={title} className={`relative w-full ${wide ? 'max-w-2xl' : 'max-w-lg'} max-h-full overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl`}>
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
           <button type="button" onClick={onClose} aria-label="Close" className="text-slate-500 hover:text-slate-900">

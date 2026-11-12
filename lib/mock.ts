@@ -55,6 +55,7 @@ export const events = [
   {
     id: 'football-derby',
     hub: 'Sports & Turf',
+    sport: 'Football 7v7',
     date: '2026-11-20T17:00:00',
     hours: 3,
     tag: 'Varsity Cup',
@@ -352,6 +353,30 @@ export const clubNights = [
 // ---------- Sports ----------
 
 export const disciplines = ['Football 7v7', 'Pickleball', 'Tennis', 'Basketball', 'Badminton']
+
+// Positions you can post per sport, and who has already posted (placeholder players).
+export const sportPositions: Record<string, string[]> = {
+  'Football 7v7': ['Goalkeeper', 'Defender', 'Midfielder', 'Winger', 'Striker'],
+  Pickleball: ['Singles', 'Doubles – Left side', 'Doubles – Right side'],
+  Tennis: ['Singles', 'Doubles – Deuce side', 'Doubles – Ad side'],
+  Basketball: ['Point Guard', 'Shooting Guard', 'Small Forward', 'Power Forward', 'Center'],
+  Badminton: ['Singles', 'Doubles – Front court', 'Doubles – Back court', 'Mixed Doubles']
+}
+
+export const skillLevels = ['Beginner', 'Intermediate', 'Advanced']
+
+export const squadPosts = [
+  { sport: 'Football 7v7', initials: 'DK', name: 'Dev K.', position: 'Goalkeeper', level: 'Advanced' },
+  { sport: 'Football 7v7', initials: 'SK', name: 'Sid K.', position: 'Defender', level: 'Intermediate' },
+  { sport: 'Football 7v7', initials: 'RV', name: 'Rahul V.', position: 'Midfielder', level: 'Advanced' },
+  { sport: 'Football 7v7', initials: 'AS', name: 'Arjun S.', position: 'Striker', level: 'Advanced' },
+  { sport: 'Basketball', initials: 'TO', name: "Tara O'Connor", position: 'Point Guard', level: 'Intermediate' },
+  { sport: 'Basketball', initials: 'MR', name: 'Marcus R.', position: 'Center', level: 'Advanced' },
+  { sport: 'Tennis', initials: 'SZ', name: 'Sarah Zhao', position: 'Singles', level: 'Advanced' },
+  { sport: 'Tennis', initials: 'LK', name: 'Liam K.', position: 'Doubles – Deuce side', level: 'Intermediate' },
+  { sport: 'Badminton', initials: 'PN', name: 'Priya N.', position: 'Doubles – Front court', level: 'Intermediate' },
+  { sport: 'Pickleball', initials: 'JD', name: 'Jay D.', position: 'Doubles – Left side', level: 'Beginner' }
+]
 
 export const venues = [
   {
