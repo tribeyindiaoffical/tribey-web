@@ -12,7 +12,7 @@ import { PositionModal, PositionSection, usePositions } from '../../components/P
 
 type Event = Omit<(typeof seedEvents)[number], 'sport'> & { sport?: string; mine?: boolean }
 
-const PAGE = 3
+const PAGE = 6
 const hubPhotos: Record<string, string> = {
   'Sports & Turf': img('1431324155629-1a6deb1dec8d'),
   'Travel & Treks': img('1501785888041-af3ef285b470'),
@@ -403,7 +403,11 @@ export default function ExploreView({ initialQuery = '' }: { initialQuery?: stri
             setMyEvents((list) => [e, ...list])
             setCreating(false)
             setHub(hubs[0])
-            setStart(0)
+            setQuery('')
+            setGoingOnly(false)
+            // Jump to the page the new event lands on (events are sorted by date).
+            const idx = [...all, e].sort((a, b) => a.date.localeCompare(b.date)).indexOf(e)
+            setStart(Math.floor(idx / PAGE) * PAGE)
             notify(`Event published: ${e.title}`, '/explore')
           }}
         />
